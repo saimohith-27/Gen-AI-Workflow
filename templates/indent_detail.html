@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Indent Request</h2>
+
+{% if not record %}
+  <p>Indent request not found.</p>
+{% else %}
+<div class="container mt-5">
+  <div class="card shadow-sm mb-4 glass-card">
+    <div class="card-body">
+      <h4>{{ record.title }}</h4>
+      <p><strong>Indent ID:</strong> {{ record.id }}</p>
+      <p><strong>Category:</strong> {{ record.category }}</p>
+      <p><strong>Route To:</strong> {{ record.route_to_designation }}</p>
+      <p><strong>Status:</strong> <span class="badge bg-warning text-dark">{{ record.status }}</span></p>
+      <p><strong>Estimated Cost:</strong> {{ record.estimated_cost }}</p>
+      <p><strong>Budget Limit:</strong> {{ record.budget_limit if record.budget_limit is not none else '-' }}</p>
+      <p><strong>Difference:</strong> {{ record.cost_difference if record.cost_difference is not none else '-' }}</p>
+      <p><strong>Need Details:</strong> {{ record.indent_text }}</p>
+    </div>
+  </div>
+
+  <div class="card shadow-sm mb-4 glass-card">
+    <div class="card-body">
+      <h5>AI Analysis</h5>
+      <p><strong>Summary:</strong> {{ record.ai_analysis.summary if record.ai_analysis else '-' }}</p>
+      <p><strong>Reasoning:</strong> {{ record.ai_analysis.reasoning if record.ai_analysis else '-' }}</p>
+      <p><strong>Budget Band:</strong> {{ record.ai_analysis.budget_band if record.ai_analysis else '-' }}</p>
+    </div>
+  </div>
+
+  {% if user_can_review %}
+  <div class="card shadow-sm mb-4 glass-card">
+    <div class="card-body">
+      <h5>Approve / Disapprove</h5>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Decision</label>
+          <select name="decision" class="form-control" required>
+            <option value="approved">Approve</option>
+            <option value="disapproved">Disapprove</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Approved Cost (Optional)</label>
+          <input type="number" step="0.01" min="0" name="approved_cost" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Reason</label>
+          <textarea name="review_reason" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <button class="btn btn-brand" type="submit">Submit Decision</button>
+      </form>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h5>Indent Audit Trail</h5>
+      <ul class="list-group">
+        {% for log in record.audit_log %}
+          <li class="list-group-item">{{ log }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h4 class="mb-1">Indent Requests</h4>
+      <p class="muted mb-4">Track raised requests and review queue assignments.</p>
+
+      {% if not indents %}
+        <p class="muted">No indent requests available.</p>
+      {% else %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Indent ID</th>
+              <th>Scope</th>
+              <th>Category</th>
+              <th>Route</th>
+              <th>Estimated</th>
+              <th>Budget</th>
+              <th>Difference</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in indents %}
+            <tr>
+              <td><small>{{ item.id }}</small></td>
+              <td>
+                {% if item.indent_scope == 'created' %}
+                  <span class="badge bg-primary">Created by me</span>
+                {% elif item.indent_scope == 'assigned' %}
+                  <span class="badge bg-success">Assigned to me</span>
+                {% elif item.indent_scope == 'created_and_assigned' %}
+                  <span class="badge bg-info text-dark">Created + Assigned</span>
+                {% elif item.indent_scope == 'all' %}
+                  <span class="badge bg-dark">All indents</span>
+                {% else %}
+                  <span class="badge bg-secondary">Visible</span>
+                {% endif %}
+              </td>
+              <td>{{ item.category }}</td>
+              <td>{{ item.route_to_designation }}</td>
+              <td>{{ item.estimated_cost }}</td>
+              <td>{{ item.budget_limit if item.budget_limit is not none else '-' }}</td>
+              <td>{{ item.cost_difference if item.cost_difference is not none else '-' }}</td>
+              <td>{{ item.status }}</td>
+              <td>
+                <a class="btn btn-sm btn-ghost" href="{{ url_for('indent_detail', indent_id=item.id) }}">Open</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

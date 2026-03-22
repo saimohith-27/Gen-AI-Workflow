@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h4 class="mb-1">Create Workflow Intake</h4>
+      <p class="muted mb-4">Workers can raise complaints and assign them to responsible team members for action.</p>
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Worker Name</label>
+          <input type="text" name="name" class="form-control" value="{{ current_user.display_name if current_user else '' }}">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Work Email</label>
+          <input type="email" name="email" class="form-control" value="{{ current_user.email if current_user else '' }}">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Business Unit / Function</label>
+          <input type="text" name="location" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Complaint Details</label>
+          <textarea name="complaint" class="form-control" rows="5" placeholder="Example: Road damaged near market, causing accidents and traffic backlog."></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Assign To</label>
+          <select name="assigned_to" class="form-control">
+            <option value="">Auto / Unassigned</option>
+            {% for assignee in assignable_users %}
+              <option value="{{ assignee.id }}">{{ assignee.display_name }} ({{ assignee.role }} | {{ assignee.designation or 'n/a' }}) - {{ assignee.email }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <button class="btn btn-brand">Submit Complaint</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

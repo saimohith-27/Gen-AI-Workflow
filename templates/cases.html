@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h4 class="mb-1">Workflow Cases</h4>
+      <p class="muted mb-4">Track complaints created by you or assigned to you.</p>
+
+      {% if not cases %}
+        <p class="muted">No cases available yet.</p>
+      {% else %}
+        {% if session.get('role') == 'owner' %}
+          <div class="table-responsive">
+            <table class="table align-middle">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th>Officer</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for case_item in cases %}
+                <tr>
+                  <td><small>{{ case_item.id }}</small></td>
+                  <td>
+                    <span class="badge bg-dark">All cases</span>
+                  </td>
+                  <td>{{ case_item.location }}</td>
+                  <td>{{ case_item.priority }}</td>
+                  <td>{{ case_item.status }}</td>
+                  <td>{{ case_item.officer }}</td>
+                  <td>
+                    <a class="btn btn-sm btn-ghost" href="{{ url_for('status', cid=case_item.id) }}">Open</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <ul class="nav nav-pills mb-3" id="casesTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link active"
+                id="created-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#created-pane"
+                type="button"
+                role="tab"
+                aria-controls="created-pane"
+                aria-selected="true"
+              >
+                Created by me
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button
+                class="nav-link"
+                id="assigned-tab"
+                data-bs-toggle="pill"
+                data-bs-target="#assigned-pane"
+                type="button"
+                role="tab"
+                aria-controls="assigned-pane"
+                aria-selected="false"
+              >
+                Assigned to me
+              </button>
+            </li>
+          </ul>
+
+          <div class="tab-content" id="casesTabsContent">
+            <div class="tab-pane fade show active" id="created-pane" role="tabpanel" aria-labelledby="created-tab" tabindex="0">
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Case ID</th>
+                      <th>Type</th>
+                      <th>Location</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th>Officer</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set created_ns = namespace(has_rows=false) %}
+                    {% for case_item in cases %}
+                      {% if case_item.case_scope in ['created', 'created_and_assigned'] %}
+                        {% set created_ns.has_rows = true %}
+                        <tr>
+                          <td><small>{{ case_item.id }}</small></td>
+                          <td>
+                            {% if case_item.case_scope == 'created_and_assigned' %}
+                              <span class="badge bg-info text-dark">Created + Assigned</span>
+                            {% else %}
+                              <span class="badge bg-primary">Created by me</span>
+                            {% endif %}
+                          </td>
+                          <td>{{ case_item.location }}</td>
+                          <td>{{ case_item.priority }}</td>
+                          <td>{{ case_item.status }}</td>
+                          <td>{{ case_item.officer }}</td>
+                          <td>
+                            <a class="btn btn-sm btn-ghost" href="{{ url_for('status', cid=case_item.id) }}">Open</a>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    {% endfor %}
+                    {% if not created_ns.has_rows %}
+                      <tr>
+                        <td colspan="7" class="muted">No cases created by you.</td>
+                      </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="assigned-pane" role="tabpanel" aria-labelledby="assigned-tab" tabindex="0">
+              <div class="table-responsive">
+                <table class="table align-middle">
+                  <thead>
+                    <tr>
+                      <th>Case ID</th>
+                      <th>Type</th>
+                      <th>Location</th>
+                      <th>Priority</th>
+                      <th>Status</th>
+                      <th>Officer</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set assigned_ns = namespace(has_rows=false) %}
+                    {% for case_item in cases %}
+                      {% if case_item.case_scope in ['assigned', 'created_and_assigned'] %}
+                        {% set assigned_ns.has_rows = true %}
+                        <tr>
+                          <td><small>{{ case_item.id }}</small></td>
+                          <td>
+                            {% if case_item.case_scope == 'created_and_assigned' %}
+                              <span class="badge bg-info text-dark">Created + Assigned</span>
+                            {% else %}
+                              <span class="badge bg-success">Assigned to me</span>
+                            {% endif %}
+                          </td>
+                          <td>{{ case_item.location }}</td>
+                          <td>{{ case_item.priority }}</td>
+                          <td>{{ case_item.status }}</td>
+                          <td>{{ case_item.officer }}</td>
+                          <td>
+                            <a class="btn btn-sm btn-ghost" href="{{ url_for('status', cid=case_item.id) }}">Open</a>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    {% endfor %}
+                    {% if not assigned_ns.has_rows %}
+                      <tr>
+                        <td colspan="7" class="muted">No cases assigned to you.</td>
+                      </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

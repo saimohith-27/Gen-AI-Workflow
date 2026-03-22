@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 760px;">
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h4 class="mb-1">Profile</h4>
+      <p class="muted mb-4">Update your display name, password, and date joined.</p>
+
+      <form method="POST" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Display Name</label>
+          <input type="text" name="display_name" class="form-control" value="{{ profile.display_name or '' }}" required>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Date Joined</label>
+          <input type="date" name="created_at" class="form-control" value="{{ profile.created_at }}" readonly>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" value="{{ profile.email or '' }}" readonly>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Role</label>
+          <input type="text" class="form-control" value="{{ profile.role or '' }}" readonly>
+        </div>
+
+        <div class="col-md-3">
+          <label class="form-label">Designation</label>
+          <input type="text" class="form-control" value="{{ profile.designation or '' }}" readonly>
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">New Password</label>
+          <input type="password" name="new_password" class="form-control" minlength="6" placeholder="Leave empty to keep current password">
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Confirm Password</label>
+          <input type="password" name="confirm_password" class="form-control" minlength="6" placeholder="Re-enter new password">
+        </div>
+
+        <div class="col-12">
+          <button class="btn btn-brand" type="submit">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

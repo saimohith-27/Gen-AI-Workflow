@@ -1,4 +1,4 @@
-# Civic Complaint AI Assistant (Prototype)
+# Gen-AI-Workflow (Prototype)
 
 This Flask prototype accepts citizen complaints, sends them to a GenAI (Gemini-like) API for analysis and routing, and displays the results.
 
@@ -36,4 +36,3 @@ Notes
 
 - The app currently uses an in-memory store for demo purposes. Replace with your persistent DB where marked by `???` in `app.py`.
 - Update `send_to_gemini()` in `app.py` to match your actual LLM API's payload/response format.
-# Gen-AI-Workflow

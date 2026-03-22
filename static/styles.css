@@ -1,0 +1,333 @@
+:root{
+  --bg:#f7f8f3;
+  --bg-soft:#eceee4;
+  --ink:#132226;
+  --muted:#5f6c6f;
+  --card:#ffffff;
+  --line:#d7ddd4;
+  --brand:#186a5f;
+  --brand-strong:#0f4f47;
+  --accent:#e4a62a;
+  --glow:0 18px 45px rgba(18, 53, 48, 0.16);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+body.app-shell{
+  font-family:"Space Grotesk", "Segoe UI", sans-serif;
+  margin:0;
+  color:var(--ink);
+  line-height:1.65;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(24,106,95,0.16), transparent 32%),
+    radial-gradient(circle at 92% 12%, rgba(228,166,42,0.18), transparent 28%),
+    linear-gradient(180deg, #f8faf5 0%, #f2f5ec 50%, #ecf0e6 100%);
+  min-height:100vh;
+}
+
+.site-main{
+  padding-top:2.4rem;
+  padding-bottom:2.8rem;
+}
+
+.wrap{
+  max-width:1100px;
+  margin:0 auto;
+  padding:1.2rem 1rem;
+}
+
+.site-navbar{
+  background:linear-gradient(110deg, #0f4f47 0%, #186a5f 52%, #0f4f47 100%);
+  border-bottom:1px solid rgba(255,255,255,0.28);
+  box-shadow:0 10px 28px rgba(9,45,40,0.28);
+  padding:0.75rem 0;
+}
+
+.site-brand{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  letter-spacing:0.4px;
+  font-weight:700;
+}
+
+.brand-dot{
+  width:0.7rem;
+  height:0.7rem;
+  border-radius:50%;
+  display:inline-block;
+  background:radial-gradient(circle at 30% 30%, #fff4cf 0%, #ffc648 45%, #d68d17 100%);
+  box-shadow:0 0 0 4px rgba(255,255,255,0.16);
+}
+
+.site-nav-link{
+  color:#f4fff7 !important;
+  border-radius:999px;
+  border:1px solid transparent;
+  transition:all 0.2s ease;
+}
+
+.site-nav-link:hover,
+.site-nav-link:focus{
+  color:#fff !important;
+  border-color:rgba(255,255,255,0.3);
+  background:rgba(255,255,255,0.14);
+}
+
+.user-menu-wrap{
+  margin-left:0.25rem;
+}
+
+.user-menu-toggle{
+  width:2.3rem;
+  height:2.3rem;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.45);
+  background:rgba(255,255,255,0.2);
+  color:#ffffff;
+  font-weight:700;
+  line-height:1;
+  padding:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 5px 14px rgba(0,0,0,0.16);
+}
+
+.user-menu-toggle::after{
+  display:none;
+}
+
+.user-menu-toggle:hover,
+.user-menu-toggle:focus,
+.user-menu-toggle.show{
+  background:rgba(255,255,255,0.32);
+  border-color:rgba(255,255,255,0.72);
+  color:#fff;
+}
+
+.user-menu-dropdown{
+  margin-top:0.55rem;
+  min-width:11rem;
+  border:1px solid #d8dfd8;
+  border-radius:12px;
+  padding:0.4rem;
+  box-shadow:0 14px 30px rgba(12,39,34,0.2);
+}
+
+.user-menu-dropdown .dropdown-item{
+  border-radius:8px;
+  font-weight:600;
+  color:#173134;
+}
+
+.user-menu-dropdown .dropdown-item:hover,
+.user-menu-dropdown .dropdown-item:focus{
+  background:#edf6f2;
+  color:#0f4f47;
+}
+
+.hero-panel{
+  background:linear-gradient(132deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.82) 100%);
+  border:1px solid rgba(255,255,255,0.68);
+  border-radius:20px;
+  box-shadow:var(--glow);
+  padding:2.3rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-panel::after{
+  content:"";
+  position:absolute;
+  right:-100px;
+  bottom:-120px;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(24,106,95,0.2) 0%, rgba(24,106,95,0) 72%);
+  pointer-events:none;
+}
+
+.kicker{
+  margin:0;
+  font-size:0.85rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--brand);
+  font-weight:700;
+}
+
+.hero-panel h1{
+  margin:0.55rem 0 0.8rem;
+  font-size:clamp(1.8rem, 3.8vw, 3rem);
+  line-height:1.18;
+}
+
+.hero-copy{
+  max-width:70ch;
+  color:#334346;
+}
+
+.hero-actions{
+  margin-top:1.2rem;
+  display:flex;
+  gap:0.75rem;
+  flex-wrap:wrap;
+}
+
+.btn-brand{
+  background:var(--brand);
+  color:#fff;
+  border:1px solid var(--brand);
+  border-radius:10px;
+  padding:0.58rem 1rem;
+  font-weight:600;
+}
+
+.btn-brand:hover,
+.btn-brand:focus{
+  background:var(--brand-strong);
+  border-color:var(--brand-strong);
+  color:#fff;
+}
+
+.btn-ghost{
+  border:1px solid #2f5d56;
+  color:#1b5249;
+  border-radius:10px;
+  padding:0.58rem 1rem;
+  background:rgba(255,255,255,0.7);
+  font-weight:600;
+}
+
+.btn-ghost:hover,
+.btn-ghost:focus{
+  background:#fff;
+  color:#0e4038;
+}
+
+.grid-cards{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:1rem;
+}
+
+.feature-card,
+.content-panel,
+.flow-strip,
+.card.glass-card{
+  background:rgba(255,255,255,0.88);
+  border:1px solid rgba(255,255,255,0.72);
+  border-radius:16px;
+  box-shadow:var(--glow);
+}
+
+.feature-card,
+.content-panel,
+.flow-strip{
+  padding:1.4rem;
+}
+
+.feature-card h3,
+.flow-strip h3,
+.content-panel h2,
+.content-panel h3{
+  margin-top:0;
+}
+
+.feature-card ul,
+.content-panel ul{
+  margin-bottom:0;
+  color:#344447;
+}
+
+.flow-steps{
+  display:grid;
+  grid-template-columns:repeat(7, minmax(0, 1fr));
+  gap:0.6rem;
+  margin-top:0.75rem;
+}
+
+.flow-steps span{
+  text-align:center;
+  background:#f6fbf8;
+  border:1px solid #d2e1da;
+  border-radius:999px;
+  padding:0.4rem 0.6rem;
+  font-size:0.86rem;
+  font-weight:600;
+}
+
+.muted{
+  color:var(--muted);
+  font-size:0.93rem;
+}
+
+form{
+  background:transparent;
+  padding:0;
+  box-shadow:none;
+}
+
+label{
+  font-weight:600;
+  color:#24373a;
+}
+
+input[type=text],
+input[type=email],
+textarea,
+.form-control{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:0.72rem 0.78rem;
+}
+
+input:focus,
+textarea:focus,
+.form-control:focus{
+  border-color:#3f8f84;
+  box-shadow:0 0 0 3px rgba(24,106,95,0.16);
+}
+
+.card.glass-card{
+  border:none;
+}
+
+.list-group-item{
+  border-color:#e6ece4;
+  background:rgba(255,255,255,0.82);
+}
+
+.site-footer{
+  border-top:1px solid rgba(18,56,50,0.12);
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(5px);
+  color:#36494d;
+  font-size:0.9rem;
+}
+
+@media (max-width: 991px){
+  .site-navbar .navbar-collapse{
+    margin-top:0.6rem;
+    border-top:1px solid rgba(255,255,255,0.25);
+    padding-top:0.45rem;
+  }
+
+  .user-menu-wrap{
+    margin-top:0.45rem;
+    align-self:flex-start;
+  }
+
+  .grid-cards{
+    grid-template-columns:1fr;
+  }
+
+  .flow-steps{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+}

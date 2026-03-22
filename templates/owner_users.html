@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card shadow-sm glass-card mb-4">
+    <div class="card-body">
+      <h4 class="mb-1">Owner User Management</h4>
+      <p class="muted mb-4">Create users and define role access for workflow ownership.</p>
+
+      <form method="POST" class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Display Name</label>
+          <input type="text" name="display_name" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Role</label>
+          <select name="role" class="form-control" required>
+            <option value="worker" selected>worker</option>
+            <option value="owner">owner</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Designation</label>
+          <select name="designation" class="form-control" required>
+            <option value="hr">hr</option>
+            <option value="manager">manager</option>
+            <option value="lead">lead</option>
+            <option value="sales">sales</option>
+            <option value="legal">legal</option>
+            <option value="pwd">pwd</option>
+            <option value="finance">finance</option>
+            <option value="it">it</option>
+          </select>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-brand">Create User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h5 class="mb-3">Existing Users</h5>
+      {% if not users %}
+        <p class="muted">No users found.</p>
+      {% else %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Designation</th>
+              <th>User ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user in users %}
+            <tr>
+              <td>{{ user.display_name }}</td>
+              <td>{{ user.email }}</td>
+              <td><span class="badge bg-secondary text-uppercase">{{ user.role }}</span></td>
+              <td><span class="badge bg-info text-dark text-uppercase">{{ user.designation or '-' }}</span></td>
+              <td><small>{{ user.id }}</small></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

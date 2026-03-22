@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="content-panel">
+  <h2>About the Autonomous Workflow Stack</h2>
+  <p>This prototype demonstrates an Agentic AI system designed for enterprise workflow ownership. Instead of isolated copilots, specialized agents collaborate across intake, classification, prioritization, routing, execution, monitoring, and auditing.</p>
+
+  <h3>Agent Responsibilities</h3>
+  <ul>
+    <li><strong>Analyzer Agent:</strong> Summarizes incoming workflow context and infers category.</li>
+    <li><strong>Priority Agent:</strong> Assigns urgency and response window for SLA management.</li>
+    <li><strong>Routing Agent:</strong> Maps categories to the right operational owner.</li>
+    <li><strong>Execution Agent:</strong> Starts process action and tracks baseline state.</li>
+    <li><strong>Monitoring Agent:</strong> Detects risk or stall states and escalates automatically.</li>
+    <li><strong>Audit Agent:</strong> Logs every meaningful decision for compliance and traceability.</li>
+  </ul>
+
+  <h3>Integration Points</h3>
+  <ul>
+    <li>LLM provider integration through environment-based API configuration.</li>
+    <li>Persistent enterprise data store replacing in-memory records.</li>
+    <li>External workflow tooling connectors (ticketing, ERP, HRMS, contract systems).</li>
+  </ul>
+</section>
+
+{% endblock %}

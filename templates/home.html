@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-panel">
+  <p class="kicker">Agentic AI for Autonomous Enterprise Workflows</p>
+  <h1>Multi-agent ownership for complex enterprise execution.</h1>
+  <p class="hero-copy">FlowPilot coordinates specialized AI agents that detect failures, self-correct process drift, and deliver full outcomes with minimal human follow-up, while preserving an auditable trail of every decision.</p>
+  <div class="hero-actions">
+    <a class="btn btn-brand" href="{{ url_for('submit') }}">Start a Workflow Case</a>
+    <a class="btn btn-ghost" href="{{ url_for('about') }}">See Agent Architecture</a>
+  </div>
+</section>
+
+<section class="grid-cards mt-4">
+  <article class="feature-card">
+    <h3>What this system builds</h3>
+    <ul>
+      <li>Process orchestration agents for procurement-to-payment, onboarding, and contract lifecycle.</li>
+      <li>Meeting intelligence that extracts decisions, creates tasks, and escalates stalled items.</li>
+      <li>Multi-agent collaboration for retrieval, reasoning, execution, and verification.</li>
+      <li>Workflow health monitoring that predicts bottlenecks before SLA breaches.</li>
+    </ul>
+  </article>
+  <article class="feature-card">
+    <h3>Evaluation focus</h3>
+    <ul>
+      <li>Depth of autonomy across end-to-end process steps.</li>
+      <li>Quality and reliability of failure recovery.</li>
+      <li>Auditability of each routing and execution decision.</li>
+      <li>Real-world enterprise applicability.</li>
+    </ul>
+  </article>
+</section>
+
+<section class="flow-strip mt-4">
+  <h3>Autonomous run loop</h3>
+  <div class="flow-steps">
+    <span>Intake</span>
+    <span>Analyze</span>
+    <span>Prioritize</span>
+    <span>Route</span>
+    <span>Execute</span>
+    <span>Monitor</span>
+    <span>Audit</span>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 560px;">
+  <div class="card shadow-sm glass-card">
+    <div class="card-body">
+      <h4 class="mb-1">Login</h4>
+      <p class="muted mb-4">Sign in as owner or worker to access workflow actions.</p>
+
+      <a class="btn btn-ghost w-100 mb-3" href="{{ url_for('auth_google') }}">Continue with Google</a>
+      <div class="text-center muted mb-3">or use email and password</div>
+
+      <form method="POST">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+
+        <button class="btn btn-brand">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

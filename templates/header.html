@@ -1,0 +1,85 @@
+<nav class="navbar navbar-expand-lg navbar-dark site-navbar">
+  <div class="container">
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold site-brand" href="/">
+      <span class="brand-dot"></span>
+      FlowPilot AI
+    </a>
+
+    <!-- Toggle (for mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu -->
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+
+        <li class="nav-item">
+          <a class="nav-link px-3 site-nav-link" href="{{ url_for('index') }}">Overview</a>
+        </li>
+
+        {% if session.get('user_id') %}
+        <li class="nav-item">
+          <a class="nav-link px-3 site-nav-link" href="{{ url_for('submit') }}">Raise Complaint</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link px-3 site-nav-link" href="{{ url_for('cases') }}">Cases</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link px-3 site-nav-link" href="{{ url_for('raise_indent') }}">Raise Indent</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link px-3 site-nav-link" href="{{ url_for('indents') }}">Indents</a>
+        </li>
+
+        
+
+          {% if session.get('role') == 'owner' %}
+          <li class="nav-item">
+            <a class="nav-link px-3 site-nav-link" href="{{ url_for('owner_users') }}">Manage Users</a>
+          </li>
+          {% endif %}
+
+          <li class="nav-item">
+            <a class="nav-link px-3 site-nav-link" href="{{ url_for('about') }}">Architecture</a>
+          </li>
+
+          <li class="nav-item dropdown user-menu-wrap">
+            <button
+              class="btn user-menu-toggle dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              aria-label="Open account menu"
+            >
+              {{ (session.get('display_name') or session.get('user_email') or 'U')[0]|upper }}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end user-menu-dropdown">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('profile') }}">View Profile</a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+              </li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link px-3 site-nav-link" href="{{ url_for('about') }}">Architecture</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link px-3 site-nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+
+  </div>
+</nav>
