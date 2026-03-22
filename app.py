@@ -462,7 +462,7 @@ def auth_google():
         return redirect(url_for("login"))
 
     try:
-        redirect_to = os.getenv("OAUTH_REDIRECT_URL") or url_for("auth_callback", _external=True, _scheme='https)
+        redirect_to = os.getenv("OAUTH_REDIRECT_URL")
         oauth_response = db_client.auth.sign_in_with_oauth(
             {
                 "provider": "google",
