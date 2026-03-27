@@ -80,6 +80,7 @@ Return ONLY valid JSON:
   "priority": "low / normal / high",
   "routing": "hr / manager / lead / sales / legal / pwd / finance / it",
   "tags": ["..."],
+  "sla": "...",
   "action": "..."
 }}
 
@@ -99,6 +100,8 @@ Routing Guidelines:
 - complaints/issues related to infrastructure → pwd
 - if unclear → manager
 
+- sla should be decided based on priority and category, e.g., high priority IT issues might have a 4-hour SLA, while low priority HR requests might have a 3-day SLA
+- sla must be a short duration string in this format only: "<number> hours" or "<number> days" (examples: "4 hours", "3 days")
 - summary should be one short sentence
 - tags should be 2–5 relevant keywords
 - action should describe the next step clearly

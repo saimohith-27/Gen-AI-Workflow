@@ -1,8 +1,9 @@
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import os
+import re
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from db import get_supabase_client, is_supabase_configured
 
@@ -210,6 +211,54 @@ def infer_designation_for_complaint(analysis: dict, complaint: str) -> str:
     return "manager"
 
 
+def derive_sla_deadline_from_analysis(analysis: dict) -> str | None:
+    """Convert AI-provided SLA text into an absolute UTC timestamp for storage."""
+    if not isinstance(analysis, dict):
+        return None
+
+    raw_sla = analysis.get("sla")
+    if raw_sla in (None, ""):
+        return None
+
+    # Accept numeric SLA as hours (e.g., 4 -> 4 hours).
+    if isinstance(raw_sla, (int, float)):
+        deadline = datetime.utcnow() + timedelta(hours=float(raw_sla))
+        return deadline.replace(microsecond=0).isoformat() + "Z"
+
+    text = str(raw_sla).strip()
+    if not text:
+        return None
+
+    # If model already returns a timestamp, keep it after lightweight validation.
+    try:
+        normalized = text.replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(normalized)
+        if parsed.tzinfo is not None:
+            parsed = parsed.astimezone().replace(tzinfo=None)
+        return parsed.replace(microsecond=0).isoformat() + "Z"
+    except ValueError:
+        pass
+
+    match = re.search(
+        r"(?P<value>\d+(?:\.\d+)?)\s*(?P<unit>hours?|hrs?|hr|days?|day|minutes?|mins?|min)\b",
+        text.lower(),
+    )
+    if not match:
+        return None
+
+    value = float(match.group("value"))
+    unit = match.group("unit")
+    if unit.startswith(("day", "d")):
+        delta = timedelta(days=value)
+    elif unit.startswith(("min", "m")):
+        delta = timedelta(minutes=value)
+    else:
+        delta = timedelta(hours=value)
+
+    deadline = datetime.utcnow() + delta
+    return deadline.replace(microsecond=0).isoformat() + "Z"
+
+
 def find_least_loaded_worker_by_designation(designation: str):
     if not db_client:
         return None
@@ -398,6 +447,8 @@ db_client = init_database_connection()
 
 
 # -------------------- ROUTES --------------------
+
+
 @app.route("/")
 def index():
     if session.get("user_id"):
@@ -467,7 +518,7 @@ def auth_google():
             {
                 "provider": "google",
                 "options": {"redirect_to": redirect_to},
-            }
+            } 
         )
 
         provider_url = getattr(oauth_response, "url", None)
@@ -693,7 +744,10 @@ Complaint: {complaint}
         analysis = analyzer_agent(prompt)
 
         # ⚠️ Step 2: Priority Agent
-        priority, sla = priority_agent(analysis, complaint)
+        priority = priority_agent(analysis)
+
+        # ⏱️ AI-based SLA (converted to absolute UTC timestamp if parseable)
+        sla_deadline = derive_sla_deadline_from_analysis(analysis)
 
         # 📍 Step 3: Routing Agent
         target_designation = infer_designation_for_complaint(analysis, complaint)
@@ -715,6 +769,10 @@ Complaint: {complaint}
         audit_log = audit_agent(audit_log, "Complaint received")
         audit_log = audit_agent(audit_log, "Analyzed by AI")
         audit_log = audit_agent(audit_log, f"Priority set to {priority}")
+        if sla_deadline:
+            audit_log = audit_agent(audit_log, f"SLA set by AI to {sla_deadline}")
+        else:
+            audit_log = audit_agent(audit_log, "AI SLA unavailable; system fallback may apply")
         if auto_assignee:
             audit_log = audit_agent(
                 audit_log,
@@ -740,7 +798,7 @@ Complaint: {complaint}
                     "complaint": complaint,
                     "analysis": analysis,
                     "priority": priority,
-                    "sla": sla,
+                    "sla": sla_deadline,
                     "officer": officer,
                     "status": status.strip().lower(),
                 }
@@ -763,7 +821,7 @@ Complaint: {complaint}
             "complaint": complaint,
             "analysis": analysis,
             "priority": priority,
-            "sla": sla,
+            "sla": sla_deadline,
             "officer": officer,
             "status": status,
             "audit_log": audit_log,
